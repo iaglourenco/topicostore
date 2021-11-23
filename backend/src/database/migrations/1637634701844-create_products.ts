@@ -1,13 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createUsers1637593646398 implements MigrationInterface {
+export class createProducts1637634701844 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    //Realiza as alterações no banco de dados
-    //Criar tabela, criar novo campo, deletar campo, etc
-
     await queryRunner.createTable(
       new Table({
-        name: "users",
+        name: "products",
         columns: [
           {
             name: "id",
@@ -17,27 +14,33 @@ export class createUsers1637593646398 implements MigrationInterface {
             generationStrategy: "increment",
           },
           {
-            name: "email",
+            name: "user_id",
+            type: "integer",
+          },
+          {
+            name: "name",
             type: "varchar",
             isNullable: false,
           },
           {
-            name: "password",
+            name: "description",
             type: "varchar",
             isNullable: false,
           },
           {
-            name: "first_name",
-            type: "varchar",
+            name: "price",
+            type: "integer",
+            isNullable: false,
           },
+        ],
+        foreignKeys: [
           {
-            name: "image",
-            type: "varchar",
-            isNullable: true,
-          },
-          {
-            name: "last_name",
-            type: "varchar",
+            name: "ProductUser",
+            columnNames: ["user_id"],
+            referencedColumnNames: ["id"],
+            referencedTableName: "users",
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
         ],
       })
@@ -45,9 +48,6 @@ export class createUsers1637593646398 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    //Desfaz as alterações no banco de dados
-    //Desfazer o que foi feito no método up
-
-    await queryRunner.dropTable("users");
+    await queryRunner.dropTable("products");
   }
 }
