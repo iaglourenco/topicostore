@@ -7,7 +7,12 @@ export default class Mydocuments extends Document {
   render() {
     return (
       <Html lang="pt">
-        <Head></Head>
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Robot:300,400,500,700&display=swap"
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
