@@ -23,6 +23,21 @@ export default class Product {
   @Column()
   price: number;
 
+  @Column()
+  category: string;
+
+  @Column()
+  brand: string;
+
+  @Column()
+  stock: number;
+
+  @Column()
+  rating: number;
+
+  @Column()
+  reviews: number;
+
   @OneToMany(() => Image, (image) => image.product, {
     cascade: ["insert", "update"],
   })

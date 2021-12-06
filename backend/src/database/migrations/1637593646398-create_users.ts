@@ -47,7 +47,6 @@ export class createUsers1637593646398 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     //Desfaz as alterações no banco de dados
     //Desfazer o que foi feito no método up
-
     await queryRunner.dropTable("users");
   }
 }

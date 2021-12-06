@@ -18,6 +18,29 @@ export class createProducts1637634701844 implements MigrationInterface {
             type: "integer",
           },
           {
+            name: "brand",
+            type: "varchar",
+            isNullable: false,
+          },
+          {
+            name: "stock",
+            type: "integer",
+          },
+          {
+            name: "rating",
+            type: "decimal",
+            isNullable: true,
+          },
+          {
+            name: "reviews",
+            type: "integer",
+            isNullable: true,
+          },
+          {
+            name: "category",
+            type: "varchar",
+          },
+          {
             name: "name",
             type: "varchar",
             isNullable: false,
