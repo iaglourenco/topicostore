@@ -10,6 +10,7 @@ export default class Mydocuments extends Document {
         <Head>
           <link
             rel="stylesheet"
+            //Fonte Padrão
             href="https://fonts.googleapis.com/css?family=Robot:300,400,500,700&display=swap"
           />
         </Head>
@@ -27,6 +28,7 @@ Mydocuments.getInitialProps = async (ctx) => {
   const OriginalRenderPage = ctx.renderPage;
   ctx.renderPage = () => {
     return OriginalRenderPage({
+      //App como parametro -> props como parametro
       enhanceApp: (App) => (props) => sheets.collect(<app {...props} />),
     });
   };
