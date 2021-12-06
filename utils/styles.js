@@ -11,6 +11,7 @@ const useStyles = makeStyles({
     },
   },
   brand: {
+    //logo do site
     fontWeight: 'bold',
     fontSize: '1.5rem',
   },

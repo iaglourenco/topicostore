@@ -1,3 +1,4 @@
+//import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography} from '@material-ui/core';
 import Layout from '../components/Layout';
 import {
   Grid,
@@ -19,8 +20,10 @@ export default function Home() {
         <h1>Produtos</h1>
         <Grid container spacing={3}>
           {data.products.map((product) => (
+            //md= numero de produtos
             <Grid item md={4} key={product.name}>
               <Card>
+                {/* Criando Hooks para cada produto dinamicamente usando o id do produto do data.js*/}
                 <NextLink href={`/product/${product.id}`} passHref>
                   <CardActionArea>
                     <CardMedia
@@ -29,11 +32,13 @@ export default function Home() {
                       title={product.name}
                     ></CardMedia>
                     <CardContent>
+                      {/*formatação de produtos*/}
                       <Typography>{product.name}</Typography>
                     </CardContent>
                   </CardActionArea>
                 </NextLink>
                 <CardActions>
+                  {/*formatação de preços*/}
                   <Typography>R${product.price} </Typography>
                   <Button size="small" color="primary">
                     Add no carrinho

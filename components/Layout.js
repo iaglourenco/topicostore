@@ -54,6 +54,7 @@ export default function Layout({ title, description, children }) {
         <AppBar position="static" className={classes.navbar}>
           <Toolbar>
             <NextLink href="/" passHref>
+              {/*Hook do nome do site para FrontPage*/}
               <Link>
                 <Typography className={classes.brand}>Tópicos Store</Typography>
               </Link>
@@ -62,10 +63,11 @@ export default function Layout({ title, description, children }) {
           para isso a classe grow*/}
             <div className={classes.grow}></div>
             <div>
+              {/*Hook para carrinho e login*/}
               <NextLink href="/cart" passHref>
                 <Link>Carrinho</Link>
               </NextLink>
-              <NextLink href="/lart" passHref>
+              <NextLink href="/login" passHref>
                 <Link>Login</Link>
               </NextLink>
             </div>

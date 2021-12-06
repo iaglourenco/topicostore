@@ -23,7 +23,22 @@ export default function ProductScreen() {
   const product = data.products.find((a) => a.id === id);
 
   if (!product) {
-    return <div> Produto inexistente</div>;
+    return (
+      <Layout>
+        <div>
+          <NextLink href="/" passHref>
+            <Link>
+              <Typography> Voltar aos Produtos</Typography>
+            </Link>
+          </NextLink>
+        </div>
+        <Grid container spacing={1}>
+          <Typography component="h1" variant="h1">
+            Por enquanto não temos esse produto em nossa loja.
+          </Typography>
+        </Grid>
+      </Layout>
+    );
   }
   return (
     <Layout title={product.name} description={product.description}>
@@ -42,9 +57,10 @@ export default function ProductScreen() {
             alt={product.name}
             width={640}
             height={640}
-            Layout="responsive "
+            Layout="responsive"
           />
         </Grid>
+
         <Grid item md={3} xs={12}>
           <List>
             <ListItem>
@@ -72,6 +88,7 @@ export default function ProductScreen() {
             </ListItem>
           </List>
         </Grid>
+
         <Grid item md={3} xs={12}>
           <Card>
             <List>
