@@ -13,8 +13,10 @@ import Product from "./Product";
 import bcrypt from "bcryptjs";
 @Entity("users")
 export default class User {
-  @PrimaryGeneratedColumn("increment")
-  id: number;
+  @PrimaryGeneratedColumn("uuid", {
+    name: "id",
+  })
+  id: string;
 
   @Column({ unique: true })
   email: string;

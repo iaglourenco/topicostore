@@ -11,10 +11,12 @@ export class createUsers1637593646398 implements MigrationInterface {
         columns: [
           {
             name: "id",
-            type: "integer",
+            type: "uuid",
             isPrimary: true,
+            isUnique: true,
             isGenerated: true,
-            generationStrategy: "increment",
+            generationStrategy: "uuid",
+            default: "uuid_generate_v4()",
           },
           {
             name: "email",

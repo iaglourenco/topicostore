@@ -15,7 +15,7 @@ export class createProducts1637634701844 implements MigrationInterface {
           },
           {
             name: "user_id",
-            type: "integer",
+            type: "uuid",
           },
           {
             name: "brand",
