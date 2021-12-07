@@ -12,7 +12,7 @@ import {
   Card,
   Button,
 } from '@material-ui/core';
-import { mergeClasses } from '@material-ui/styles';
+//import { mergeClasses } from '@material-ui/styles';
 import useStyles from '../../utils/styles';
 import Image from 'next/image';
 

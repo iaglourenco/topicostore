@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { createTheme } from '@material-ui/core/styles';
 import {
   AppBar,
   Toolbar,
@@ -9,11 +10,15 @@ import {
   Link,
   ThemeProvider,
   CssBaseline,
+  Switch,
 } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
 import useStyles from '../utils/styles';
+import { Store } from '../utils/Store';
+import Cookies from 'js-cookie';
 
 export default function Layout({ title, description, children }) {
+  const { state, dispatch } = useContext(Store);
+  const { darkMode } = state; //usado na createMuiTreme
   const theme = createTheme({
     typography: {
       h1: {
@@ -27,9 +32,10 @@ export default function Layout({ title, description, children }) {
         margin: '1rem 0',
       },
       palette: {
-        type: 'ligth',
+        //mode: darkMode ? 'dark' : 'light', também funciona
+        type: darkMode ? 'dark' : 'light',
         primary: {
-          main: '##3f51b5',
+          main: '#f0c000',
         },
         secundary: {
           main: '#208080',
@@ -38,6 +44,12 @@ export default function Layout({ title, description, children }) {
     },
   });
   const classes = useStyles();
+  const darkModeChangeHandler = () => {
+    //baseado no status do darkMode
+    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
+    const newDarkMode = !darkMode;
+    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
+  };
 
   return (
     <div>
@@ -63,6 +75,10 @@ export default function Layout({ title, description, children }) {
           para isso a classe grow*/}
             <div className={classes.grow}></div>
             <div>
+              <Switch //botão do darkMode
+                checked={darkMode}
+                onChange={darkModeChangeHandler}
+              ></Switch>
               {/*Hook para carrinho e login*/}
               <NextLink href="/cart" passHref>
                 <Link>Carrinho</Link>
