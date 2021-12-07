@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -8,26 +10,29 @@ import {
 } from "typeorm";
 import Image from "./Image";
 import Product from "./Product";
-
+import bcrypt from "bcryptjs";
 @Entity("users")
 export default class User {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPassword() {
+    this.password = bcrypt.hashSync(this.password, 8);
+  }
 
   @Column()
   first_name: string;
 
   @Column()
   last_name: string;
-
-  @Column()
-  image: string;
 
   @OneToMany(() => Product, (product) => product.user, {
     cascade: ["update"],

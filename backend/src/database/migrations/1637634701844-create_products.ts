@@ -25,6 +25,7 @@ export class createProducts1637634701844 implements MigrationInterface {
           {
             name: "stock",
             type: "integer",
+            isNullable: true,
           },
           {
             name: "rating",
