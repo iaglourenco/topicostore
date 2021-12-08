@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createProducts1637634701844 implements MigrationInterface {
+export class createBuyHistory1638919668447 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "products",
+        name: "buy_history",
         columns: [
           {
             name: "id",
@@ -14,42 +14,29 @@ export class createProducts1637634701844 implements MigrationInterface {
             generationStrategy: "increment",
           },
           {
+            name: "data",
+            type: "timestamp",
+          },
+          {
+            name: "total",
+            type: "decimal",
+          },
+          {
+            name: "status",
+            type: "varchar",
+          },
+          {
+            name: "enviado",
+            type: "boolean",
+          },
+          {
             name: "user_id",
             type: "uuid",
-          },
-          {
-            name: "brand",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
-            name: "stock",
-            type: "integer",
-            isNullable: true,
-          },
-          {
-            name: "category",
-            type: "varchar",
-          },
-          {
-            name: "name",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
-            name: "description",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
-            name: "price",
-            type: "integer",
-            isNullable: false,
           },
         ],
         foreignKeys: [
           {
-            name: "ProductUser",
+            name: "UserBuyHistory",
             columnNames: ["user_id"],
             referencedColumnNames: ["id"],
             referencedTableName: "users",
@@ -62,6 +49,6 @@ export class createProducts1637634701844 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("products");
+    await queryRunner.dropTable("buy_history");
   }
 }

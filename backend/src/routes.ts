@@ -5,6 +5,8 @@ import uploadConfig from "./config/upload";
 import ProductsController from "./controllers/ProductsController";
 import AuthController from "./controllers/AuthController";
 import authMiddleware from "./middlewares/authMiddleware";
+import ReviewsController from "./controllers/ReviewsController";
+import BuyController from "./controllers/BuyController";
 
 const routes = Router();
 const upload = multer(uploadConfig);
@@ -16,6 +18,14 @@ routes.get("/users/:id", authMiddleware, UsersController.show);
 routes.post("/products", upload.array("images"), ProductsController.create);
 routes.get("/products", ProductsController.index);
 routes.get("/products/:id", ProductsController.show);
+
+// Buy products
+//
+routes.post("/buy", authMiddleware, BuyController.create);
+
+// Review a product
+// Body: opinion, stars, product
+routes.post("/review", authMiddleware, ReviewsController.create);
 
 routes.post("/auth", AuthController.authenticate);
 

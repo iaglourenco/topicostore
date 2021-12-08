@@ -13,8 +13,17 @@ export default function authMiddleware(
 
   const token = authorization.replace("Bearer ", "").trim();
   try {
-    const data = jwt.verify(token, process.env.APP_SECRET as string);
-    console.log(data);
+    const data = jwt.verify(token, process.env.APP_SECRET as string) as {
+      id: string;
+      iat: number;
+      exp: number;
+    };
+
+    if (Date.now() >= data.exp * 1000) {
+      return res.sendStatus(401);
+    }
+
+    req.body.user = data.id;
     return next();
   } catch {
     return res.sendStatus(401);

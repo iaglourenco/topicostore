@@ -3,12 +3,13 @@ import { getRepository } from "typeorm";
 import Product from "../models/Product";
 import productView from "../views/products_view";
 import * as Yup from "yup";
+import productsView from "../views/products_view";
 
 export default {
   async index(req: Request, res: Response) {
     const productsRepository = getRepository(Product);
     const products = await productsRepository.find({
-      relations: ["images", "user"],
+      relations: ["images", "user", "reviews"],
     });
     return res.json(productView.renderMany(products));
   },
@@ -17,7 +18,7 @@ export default {
     const { id } = req.params;
     const productsRepository = getRepository(Product);
     const product = await productsRepository.findOneOrFail(id, {
-      relations: ["images", "user"],
+      relations: ["images", "user", "reviews"],
     });
     return res.json(productView.render(product));
   },
@@ -55,7 +56,7 @@ export default {
       brand: Yup.string().required(),
       stock: Yup.number().required(),
       category: Yup.string().required(),
-      user: Yup.number().required(),
+      user: Yup.string().required(),
     });
 
     await schema.validate(data, { abortEarly: false });
@@ -63,6 +64,6 @@ export default {
     const product = productsRepository.create(data);
 
     await productsRepository.save(product);
-    return res.status(201).json(product);
+    return res.status(201).json(productsView.render(product));
   },
 };
