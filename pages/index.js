@@ -20,6 +20,7 @@ export default function Home() {
         <h1>Produtos</h1>
         <Grid container spacing={3}>
           {data.products.map((product) => (
+            //md= numero de produtos
             <Grid item md={4} key={product.name}>
               <Card>
                 {/* Criando Hooks para cada produto dinamicamente usando o id do produto do data.js*/}
