@@ -1,3 +1,4 @@
+import { SnackbarProvider } from 'notistack';
 import { useEffect } from 'react';
 import '../styles/globals.css';
 //import { Provider } from 'next-auth/client';
@@ -11,11 +12,20 @@ function MyApp({ Component, pageProps }) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+
   return (
-    <StoreProvider>
-      <Component {...pageProps} />
-    </StoreProvider>
-    //session={pageProps.session}>
+    <>
+      <StoreProvider>
+        <Component {...pageProps} />
+      </StoreProvider>
+      <SnackbarProvider
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <StoreProvider>
+          <Component {...pageProps} />
+        </StoreProvider>
+      </SnackbarProvider>
+    </>
   );
 }
 
