@@ -3,7 +3,7 @@ const data = {
     {
       name: 'Camisetas',
       category: 'a',
-      id: 'camisetas',
+      slug: 'camisetas',
       image: '/images/blusa_branca_masculina.jpg',
       price: 10,
       brand: 'ai',
@@ -14,7 +14,7 @@ const data = {
     },
     {
       name: 'b',
-      id: 'camisetas-legais',
+      slug: 'camisetas-legais',
       category: 'b',
       image: '/images/',
       price: 10,
@@ -26,7 +26,7 @@ const data = {
     },
     {
       name: 'c',
-      id: 'camisetas-legais',
+      slug: 'camisetas-legais',
       category: 'b',
       image: '/images/',
       price: 10,
@@ -38,7 +38,7 @@ const data = {
     },
     {
       name: 'd',
-      id: 'camisetas-legais',
+      slug: 'camisetas-legais',
       category: 'a',
       image: '/images/',
       price: 10,

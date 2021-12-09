@@ -23,8 +23,8 @@ export default function Home() {
             //md= numero de produtos
             <Grid item md={4} key={product.name}>
               <Card>
-                {/* Criando Hooks para cada produto dinamicamente usando o id do produto do data.js*/}
-                <NextLink href={`/product/${product.id}`} passHref>
+                {/* Criando Hooks para cada produto dinamicamente usando o slug do produto do data.js*/}
+                <NextLink href={`/product/${product.slug}`} passHref>
                   <CardActionArea>
                     <CardMedia
                       component="img"
