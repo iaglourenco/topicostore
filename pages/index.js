@@ -11,15 +11,17 @@ import {
   Button,
 } from '@material-ui/core';
 import NextLink from 'next/link';
-import data from '../utils/data';
+import db from "../utils/dbConnection"
+import Product from '../models/Product';
 
-export default function Home() {
+export default function Home(props) {
+  const { products } = props;
   return (
     <Layout>
       <div>
         <h1>Produtos</h1>
         <Grid container spacing={3}>
-          {data.products.map((product) => (
+          {products.map((product) => (
             //md= numero de produtos
             <Grid item md={4} key={product.name}>
               <Card>
@@ -39,7 +41,7 @@ export default function Home() {
                 </NextLink>
                 <CardActions>
                   {/*formatação de preços*/}
-                  <Typography>R${product.price} </Typography>
+                  <Typography>R$ {product.price} </Typography>
                   <Button size="small" color="primary">
                     Add no carrinho
                   </Button>
@@ -51,4 +53,16 @@ export default function Home() {
       </div>
     </Layout>
   );
+}
+
+// pega a lista de produtos do db e passa pra home
+export async function getServerSideProps() {
+  await db.connect();
+  const products = await Product.find({}).lean();
+  await db.disconnect();
+  return {
+    props: {
+      products: products.map(db.convertDocToObj),
+    },
+  };
 }

@@ -26,7 +26,7 @@ const data = {
     },
     {
       name: 'c',
-      slug: 'camisetas-legais',
+      slug: 'camisetas-legais1',
       category: 'b',
       image: '/images/',
       price: 10,
@@ -38,7 +38,7 @@ const data = {
     },
     {
       name: 'd',
-      slug: 'camisetas-legais',
+      slug: 'camisetas-legais2',
       category: 'a',
       image: '/images/',
       price: 10,

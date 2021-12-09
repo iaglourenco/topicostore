@@ -1,6 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import data from '../../utils/data';
 import Layout from '../../components/Layout';
 import NextLink from 'next/link';
 import {
@@ -15,12 +13,12 @@ import {
 //import { mergeClasses } from '@material-ui/styles';
 import useStyles from '../../utils/styles';
 import Image from 'next/image';
+import Product from '../../models/Product';
+import db from '../../utils/dbConnection';
 
-export default function ProductScreen() {
+export default function ProductScreen(props) {
+  const { product} = props;
   const classes = useStyles();
-  const router = useRouter();
-  const { id } = router.query;
-  const product = data.products.find((a) => a.id === id);
 
   if (!product) {
     return (
@@ -60,7 +58,6 @@ export default function ProductScreen() {
             Layout="responsive"
           />
         </Grid>
-
         <Grid item md={3} xs={12}>
           <List>
             <ListItem>
@@ -88,7 +85,6 @@ export default function ProductScreen() {
             </ListItem>
           </List>
         </Grid>
-
         <Grid item md={3} xs={12}>
           <Card>
             <List>
@@ -98,7 +94,7 @@ export default function ProductScreen() {
                     <Typography>Preço</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography>R${product.price}</Typography>
+                    <Typography>R$ {product.price}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -125,4 +121,16 @@ export default function ProductScreen() {
       </Grid>
     </Layout>
   );
+}
+export async function getServerSideProps(context) {
+  const {params} = context;
+  const {slug} = params;
+  await db.connect();
+  const product = await Product.findOne({slug}).lean();
+  await db.disconnect();
+  return {
+    props: {
+      product: db.convertDocToObj(product),
+    },
+  };
 }
