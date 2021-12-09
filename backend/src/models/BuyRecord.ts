@@ -2,11 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import BuyProductRecord from "./BuyProductRecord";
+import Product from "./Product";
 import User from "./User";
 
 @Entity("buy_history")
@@ -15,7 +16,7 @@ export default class BuyRecord {
   id: number;
 
   @Column()
-  data: string;
+  data: number;
 
   @Column()
   total: number;
@@ -26,14 +27,15 @@ export default class BuyRecord {
   @Column()
   enviado: boolean;
 
-  @OneToMany(
-    () => BuyProductRecord,
-    (buyProductRecord) => buyProductRecord.record
-  )
-  @JoinColumn({ name: "id" })
-  products: BuyProductRecord[];
-
-  @ManyToOne(() => User, (product) => product.history)
+  @ManyToOne(() => User, (user) => user.buyRecords, {
+    cascade: true,
+  })
   @JoinColumn({ name: "user_id" })
   user: User;
+
+  @ManyToMany(() => Product, {
+    cascade: true,
+  })
+  @JoinTable()
+  products: Product[];
 }

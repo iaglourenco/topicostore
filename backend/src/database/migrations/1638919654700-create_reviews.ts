@@ -33,7 +33,6 @@ export class createReviews1638919654700 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "ProductReviews",
             columnNames: ["product_id"],
             referencedColumnNames: ["id"],
             referencedTableName: "products",
@@ -41,7 +40,6 @@ export class createReviews1638919654700 implements MigrationInterface {
             onUpdate: "CASCADE",
           },
           {
-            name: "UserReviews",
             columnNames: ["user_id"],
             referencedColumnNames: ["id"],
             referencedTableName: "users",

@@ -8,18 +8,14 @@ import productsView from "../views/products_view";
 export default {
   async index(req: Request, res: Response) {
     const productsRepository = getRepository(Product);
-    const products = await productsRepository.find({
-      relations: ["images", "user", "reviews"],
-    });
+    const products = await productsRepository.find();
     return res.json(productView.renderMany(products));
   },
 
   async show(req: Request, res: Response) {
     const { id } = req.params;
     const productsRepository = getRepository(Product);
-    const product = await productsRepository.findOneOrFail(id, {
-      relations: ["images", "user", "reviews"],
-    });
+    const product = await productsRepository.findOneOrFail(id);
     return res.json(productView.render(product));
   },
 

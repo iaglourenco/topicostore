@@ -22,6 +22,7 @@ routes.get("/products/:id", ProductsController.show);
 // Buy products
 //
 routes.post("/buy", authMiddleware, BuyController.create);
+routes.get("/buy", authMiddleware, BuyController.index);
 
 // Review a product
 // Body: opinion, stars, product

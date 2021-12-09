@@ -2,12 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import BuyProductRecord from "./BuyProductRecord";
 import Image from "./Image";
 import Review from "./Review";
 import User from "./User";
@@ -35,20 +35,16 @@ export default class Product {
   @Column()
   stock: number;
 
-  @ManyToMany(
-    () => BuyProductRecord,
-    (buyProductRecord) => buyProductRecord.product
-  )
-  history: BuyProductRecord[];
-
   @OneToMany(() => Review, (review) => review.product, {
     cascade: ["insert", "update"],
+    eager: true,
   })
   @JoinColumn({ name: "product_id" })
   reviews: Review[];
 
   @OneToMany(() => Image, (image) => image.product, {
     cascade: ["insert", "update"],
+    eager: true,
   })
   @JoinColumn({ name: "product_id" })
   images: Image[];

@@ -7,10 +7,9 @@ import * as Yup from "yup";
 export default {
   async index(req: Request, res: Response) {
     const usersRepository = getRepository(User);
-    const users = await usersRepository.find({
-      relations: ["products"],
-    });
-    return res.json(usersView.renderMany(users));
+    const users = await usersRepository.find();
+    // return res.json(usersView.renderMany(users));
+    return res.json(users);
   },
 
   async show(req: Request, res: Response) {

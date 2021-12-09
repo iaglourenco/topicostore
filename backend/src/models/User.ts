@@ -5,10 +5,8 @@ import {
   Entity,
   JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import Image from "./Image";
 import Product from "./Product";
 import bcrypt from "bcryptjs";
 import Review from "./Review";
@@ -38,16 +36,20 @@ export default class User {
   @Column()
   last_name: string;
 
-  @OneToMany(() => BuyRecord, (buyRecord) => buyRecord.user)
-  @JoinColumn({ name: "id" })
-  history: BuyRecord[];
+  @OneToMany(() => BuyRecord, (buyRecord) => buyRecord.user, {
+    eager: true,
+  })
+  @JoinColumn({ name: "user_id" })
+  buyRecords: BuyRecord[];
 
-  @OneToMany(() => Review, (review) => review.user)
-  @JoinColumn({ name: "id" })
+  @OneToMany(() => Review, (review) => review.user, {
+    eager: true,
+  })
+  @JoinColumn({ name: "user_id" })
   reviews: Review[];
 
   @OneToMany(() => Product, (product) => product.user, {
-    cascade: ["update"],
+    eager: true,
   })
   @JoinColumn({ name: "user_id" })
   products: Product[];

@@ -36,7 +36,6 @@ export class createBuyHistory1638919668447 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "UserBuyHistory",
             columnNames: ["user_id"],
             referencedColumnNames: ["id"],
             referencedTableName: "users",

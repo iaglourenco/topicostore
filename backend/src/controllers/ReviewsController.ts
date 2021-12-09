@@ -7,18 +7,14 @@ import Review from "../models/Review";
 export default {
   async index(req: Request, res: Response) {
     const reviewsRepository = getRepository(Review);
-    const reviews = await reviewsRepository.find({
-      relations: ["products", "users"],
-    });
+    const reviews = await reviewsRepository.find();
     return res.json(reviewsView.renderMany(reviews));
   },
 
   async show(req: Request, res: Response) {
     const { id } = req.params;
     const reviewsRepository = getRepository(Review);
-    const review = await reviewsRepository.findOneOrFail(id, {
-      relations: ["products", "users"],
-    });
+    const review = await reviewsRepository.findOneOrFail(id);
     return res.json(reviewsView.render(review));
   },
 
