@@ -103,7 +103,7 @@ export default function Layout({ title, description, children }) {
               <NextLink href="/cart" passHref>
                 <Link>Carrinho</Link>
               </NextLink>
-              {userInfo ? (
+              {userInfo ? ( //se ja estiver logado, botão de login se transforma no nome do cliente
                 <>
                   <Button
                     aria-controls="simple-menu"
@@ -120,9 +120,9 @@ export default function Layout({ title, description, children }) {
                     open={Boolean(anchorEl)}
                     onClose={loginMenuCloseHandler}
                   >
-                    <MenuItem onClick={loginMenuCloseHandler}>Profile</MenuItem>
+                    <MenuItem onClick={loginMenuCloseHandler}>Perfil</MenuItem>
                     <MenuItem onClick={loginMenuCloseHandler}>
-                      My account
+                      Minha Conta
                     </MenuItem>
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>

@@ -7,6 +7,7 @@ export default function Shipping() {
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   if (!userInfo) {
+    //se nenhum cliente estiver logado, redirecionar a home
     router.push('/login?redirect=/shipping');
   }
 

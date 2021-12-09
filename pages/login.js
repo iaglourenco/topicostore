@@ -25,11 +25,13 @@ export default function Login() {
   } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
-  const { redirect } = router.query; // login?redirect=/shipping
+  const { redirect } = router.query; // se login existir, redirecionar a shipping
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   useEffect(() => {
+    //manter nome do cliente no refresh
     if (userInfo) {
+      //verifica se usuário ja está logado
       router.push('/');
     }
   }, []);
@@ -44,7 +46,7 @@ export default function Login() {
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
       Cookies.set('userInfo', data);
-      router.push(redirect || '/');
+      router.push(redirect || '/'); //se não existir login
     } catch (err) {
       enqueueSnackbar(
         err.response.data ? err.response.data.message : err.message,
