@@ -9,7 +9,7 @@ const data = {
       brand: 'ai',
       rating: 5,
       numReviews: 10,
-      countInStock: 2,
+      countInStock: 10,
       description: 'Um item legalzao',
     },
     {
@@ -21,7 +21,7 @@ const data = {
       brand: 'ai',
       rating: 5,
       numReviews: 10,
-      countInStock: 2,
+      countInStock: 5,
       description: 'Um item legalzao',
     },
     {

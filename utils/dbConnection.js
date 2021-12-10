@@ -15,10 +15,7 @@ async function connect() {
       }
       await mongoose.disconnect();
     }
-    const db = await mongoose.connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex:true,
+    const db = await mongoose.connect(process.env.MONGODB_URI, {  
       })
       .catch((err) => {
         console.log(err);

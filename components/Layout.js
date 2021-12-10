@@ -40,7 +40,7 @@ export default function Layout({ title, description, children }) {
       },
       palette: {
         //mode: darkMode ? 'dark' : 'light', também funciona
-        type: darkMode ? 'dark' : 'light',
+        mode: darkMode ? 'dark' : 'light',
         primary: {
           main: '#f0c000',
         },
@@ -101,7 +101,13 @@ export default function Layout({ title, description, children }) {
               ></Switch>
               {/*Hook para carrinho e login*/}
               <NextLink href="/cart" passHref>
-                <Link>Carrinho</Link>
+                <Link>
+                {cart.cartItems.length>0 ? (
+                  <Badge color ="secondary" badgeContent={cart.cartItems.length}>Carrinho</Badge>
+                  ):(
+                    'Carrinho'
+                    )}
+                </Link>
               </NextLink>
               {userInfo ? ( //se ja estiver logado, botão de login se transforma no nome do cliente
                 <>
