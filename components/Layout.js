@@ -60,8 +60,11 @@ export default function Layout({ title, description, children }) {
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget);
   };
-  const loginMenuCloseHandler = () => {
+  const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null);
+    if (redirect) {
+      router.push(redirect);
+    }
   };
   const logoutClickHandler = () => {
     setAnchorEl(null);
@@ -102,11 +105,16 @@ export default function Layout({ title, description, children }) {
               {/*Hook para carrinho e login*/}
               <NextLink href="/cart" passHref>
                 <Link>
-                {cart.cartItems.length>0 ? (
-                  <Badge color ="secondary" badgeContent={cart.cartItems.length}>Carrinho</Badge>
-                  ):(
+                  {cart.cartItems.length > 0 ? (
+                    <Badge
+                      color="secondary"
+                      badgeContent={cart.cartItems.length}
+                    >
+                      Carrinho
+                    </Badge>
+                  ) : (
                     'Carrinho'
-                    )}
+                  )}
                 </Link>
               </NextLink>
               {userInfo ? ( //se ja estiver logado, botão de login se transforma no nome do cliente
@@ -126,9 +134,17 @@ export default function Layout({ title, description, children }) {
                     open={Boolean(anchorEl)}
                     onClose={loginMenuCloseHandler}
                   >
-                    <MenuItem onClick={loginMenuCloseHandler}>Perfil</MenuItem>
-                    <MenuItem onClick={loginMenuCloseHandler}>
+                    <MenuItem
+                      onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                    >
                       Minha Conta
+                    </MenuItem>
+                    <MenuItem
+                      onClick={(e) =>
+                        loginMenuCloseHandler(e, '/order-history')
+                      }
+                    >
+                      Order Hisotry
                     </MenuItem>
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
