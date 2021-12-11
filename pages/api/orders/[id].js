@@ -170,13 +170,11 @@ function Order({ params }) {
                 <ListItem>
                   {shippingAddress.fullName}, {shippingAddress.address},{' '}
                   {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                  {shippingAddress.country}
+                  {shippingAddress.state}
                 </ListItem>
                 <ListItem>
                   Status:{' '}
-                  {isDelivered
-                    ? `delivered at ${deliveredAt}`
-                    : 'not delivered'}
+                  {isDelivered ? `enviado em ${deliveredAt}` : 'não enviado'}
                 </ListItem>
               </List>
             </Card>
@@ -189,7 +187,7 @@ function Order({ params }) {
                 </ListItem>
                 <ListItem>{paymentMethod}</ListItem>
                 <ListItem>
-                  Status: {isPaid ? `paid at ${paidAt}` : 'not paid'}
+                  Status: {isPaid ? `pago em ${paidAt}` : 'não pago'}
                 </ListItem>
               </List>
             </Card>
@@ -237,7 +235,7 @@ function Order({ params }) {
                               <Typography>{item.quantity}</Typography>
                             </TableCell>
                             <TableCell align="right">
-                              <Typography>${item.price}</Typography>
+                              <Typography>$ {item.price}</Typography>
                             </TableCell>
                           </TableRow>
                         ))}

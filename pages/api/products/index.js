@@ -1,7 +1,7 @@
 import nc from 'next-connect';
 import Product from '../../../models/Product';
 import db from '../../../utils/dbConnection';
- 
+
 const handler = nc();
 
 handler.get(async (req, res) => {

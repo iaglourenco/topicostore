@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useContext, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import NextLink from 'next/link';
@@ -14,23 +13,26 @@ import {
   TableRow,
   TableCell,
   Link,
-  Select,
-  MenuItem,
   Button,
   Card,
   List,
   ListItem,
+  CircularProgress,
 } from '@material-ui/core';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import useStyles from '../utils/styles';
 import CheckoutWizard from '../components/CheckoutWizard';
+import { useSnackbar } from 'notistack';
+import { getError } from '../utils/error';
+import Cookies from 'js-cookie';
 
-function PlaceOrder() {
+export default function PlaceOrder() {
   const classes = useStyles();
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
+    userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
   } = state;
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; //arredondamento em 2 casas decimais
@@ -45,8 +47,43 @@ function PlaceOrder() {
     if (!paymentMethod) {
       router.push('/payment');
     }
+    if (cartItems.length === 0) {
+      router.push('/cart');
+    }
   }, []);
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+  const placeOrderHandler = async () => {
+    closeSnackbar();
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        '/api/orders',
+        {
+          orderOItems: cartItems,
+          shippingAddress,
+          paymentMethod,
+          itemsPrice,
+          shippingPrice,
+          taxPrice,
+          totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'CART_CLEAR' });
+      Cookies.remove('cartItems');
+      setLoading(false);
+      router.push(`/order/${data._id}`);
+    } catch (err) {
+      setLoading(false);
 
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
   return (
     <Layout title="Shopping Cart">
       <CheckoutWizard activeStep={3}></CheckoutWizard>
@@ -66,7 +103,7 @@ function PlaceOrder() {
               <ListItem>
                 {shippingAddress.fullName}, {shippingAddress.address},{' '}
                 {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                {shippingAddress.country}
+                {shippingAddress.state}
               </ListItem>
             </List>
           </Card>
@@ -125,7 +162,7 @@ function PlaceOrder() {
                             <Typography>{item.quantity}</Typography>
                           </TableCell>
                           <TableCell align="right">
-                            <Typography>${item.price}</Typography>
+                            <Typography>R$ {item.price}</Typography>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -148,7 +185,7 @@ function PlaceOrder() {
                     <Typography>Itens:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">${itemsPrice}</Typography>
+                    <Typography align="right">R$ {itemsPrice}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -158,7 +195,7 @@ function PlaceOrder() {
                     <Typography>Taxas:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">${taxPrice}</Typography>
+                    <Typography align="right">R$ {taxPrice}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -168,7 +205,7 @@ function PlaceOrder() {
                     <Typography>Frete:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">${shippingPrice}</Typography>
+                    <Typography align="right">R$ {shippingPrice}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -181,16 +218,26 @@ function PlaceOrder() {
                   </Grid>
                   <Grid item xs={6}>
                     <Typography align="right">
-                      <strong>${totalPrice}</strong>
+                      <strong>R$ {totalPrice}</strong>
                     </Typography>
                   </Grid>
                 </Grid>
               </ListItem>
               <ListItem>
-                <Button variant="contained" color="primary" fullWidth>
+                <Button
+                  onClick={placeOrderHandler}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
                   Fazer pedido
                 </Button>
               </ListItem>
+              {loading && (
+                <ListItem>
+                  <CircularProgress />
+                </ListItem>
+              )}
             </List>
           </Card>
         </Grid>
@@ -198,5 +245,3 @@ function PlaceOrder() {
     </Layout>
   );
 }
-
-export default dynamic(() => Promise.resolve(PlaceOrder), { ssr: false });

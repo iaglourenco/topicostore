@@ -1,7 +1,7 @@
 import nc from 'next-connect';
 import bcrypt from 'bcryptjs';
 import User from '../../../models/User';
-import db from '../../../utils/db';
+import db from '../../../utils/dbConnection';
 import { signToken, isAuth } from '../../../utils/auth';
 
 const handler = nc();

@@ -38,22 +38,21 @@ export default function Register() {
   const classes = useStyles();
   const submitHandler = async ({
     name,
-    sobrenome,
     email,
     password,
     confirmPassword,
   }) => {
     closeSnackbar();
     if (password !== confirmPassword) {
-      enqueueSnackbar("Passwords don't match", { variant: 'error' });
+      enqueueSnackbar("Senhas não batem", { variant: 'error' });
       return;
     }
     try {
       const { data } = await axios.post('/api/users/register', {
         name,
-        sobrenome,
         email,
         password,
+        confirmPassword
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
       Cookies.set('userInfo', data);
@@ -83,7 +82,7 @@ export default function Register() {
                   variant="outlined"
                   fullWidth
                   id="name"
-                  label="Name"
+                  label="Nome"
                   inputProps={{ type: 'name' }}
                   error={Boolean(errors.name)}
                   helperText={
@@ -98,37 +97,6 @@ export default function Register() {
               )}
             ></Controller>
           </ListItem>
-
-          <ListItem>
-            <Controller
-              name="sobrenome"
-              control={control}
-              defaultValue=""
-              rules={{
-                required: true,
-                minLength: 2,
-              }}
-              render={({ field }) => (
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  id="sobrenome"
-                  label="Sobrenome"
-                  inputProps={{ type: 'sobrenome' }}
-                  error={Boolean(errors.name)}
-                  helperText={
-                    errors.name
-                      ? errors.name.type === 'minLength'
-                        ? 'Sobrenome precisa ter mais de 1 caracter'
-                        : 'Sobrenome necessário'
-                      : ''
-                  }
-                  {...field}
-                ></TextField>
-              )}
-            ></Controller>
-          </ListItem>
-
           <ListItem>
             <Controller
               name="email"
@@ -173,7 +141,7 @@ export default function Register() {
                   variant="outlined"
                   fullWidth
                   id="password"
-                  label="Password"
+                  label="Senha"
                   inputProps={{ type: 'password' }}
                   error={Boolean(errors.password)}
                   helperText={
@@ -202,7 +170,7 @@ export default function Register() {
                 <TextField
                   variant="outlined"
                   fullWidth
-                  id="confirmPassword"
+                  id="Confirmação senha"
                   label="Confirm Password"
                   inputProps={{ type: 'password' }}
                   error={Boolean(errors.confirmPassword)}
