@@ -49,7 +49,7 @@ export default function Login() {
       Cookies.set('userInfo', data);
       router.push(redirect || '/'); //se não existir login
     } catch (err) {
-enqueueSnackbar(getError(err), { variant: 'error' });
+      enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
 
@@ -109,8 +109,8 @@ enqueueSnackbar(getError(err), { variant: 'error' });
                   helperText={
                     errors.password
                       ? errors.password.type === 'minLength'
-                        ? 'Password length is more than 5'
-                        : 'Password is required'
+                        ? 'O mínimo é de 5 caracteres'
+                        : 'Senha necessária'
                       : ''
                   }
                   {...field}

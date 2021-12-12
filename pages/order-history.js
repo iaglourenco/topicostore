@@ -1,5 +1,4 @@
 import axios from 'axios';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import NexLink from 'next/link';
 import React, { useEffect, useContext, useReducer } from 'react';
@@ -37,7 +36,7 @@ function reducer(state, action) {
   }
 }
 
-function OrderHistory() {
+export default function OrderHistory() {
   const { state } = useContext(Store);
   const router = useRouter();
   const classes = useStyles();
@@ -74,12 +73,12 @@ function OrderHistory() {
             <List>
               <NexLink href="/profile" passHref>
                 <ListItem button component="a">
-                  <ListItemText primary="User Profile"></ListItemText>
+                  <ListItemText primary="Perfil"></ListItemText>
                 </ListItem>
               </NexLink>
               <NexLink href="/order-history" passHref>
                 <ListItem selected button component="a">
-                  <ListItemText primary="Order History"></ListItemText>
+                  <ListItemText primary="Histórico de compras"></ListItemText>
                 </ListItem>
               </NexLink>
             </List>
@@ -90,7 +89,7 @@ function OrderHistory() {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Histórico de Compras
+                  Histórico de compras
                 </Typography>
               </ListItem>
               <ListItem>
@@ -108,28 +107,39 @@ function OrderHistory() {
                           <TableCell>Total</TableCell>
                           <TableCell>Pago</TableCell>
                           <TableCell>Entregue</TableCell>
-                          <TableCell>Autorizar</TableCell>
+                          <TableCell>Detalhes</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {orders.map((order) => (
                           <TableRow key={order._id}>
                             <TableCell>{order._id.substring(20, 24)}</TableCell>
-                            <TableCell>{order.createdAt}</TableCell>
-                            <TableCell>${order.totalPrice}</TableCell>
+                            <TableCell>
+                              {new Date(order.createdAt).toLocaleString()}
+                            </TableCell>
+                            <TableCell>
+                              {new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL',
+                              }).format(order.totalPrice)}
+                            </TableCell>
                             <TableCell>
                               {order.isPaid
-                                ? `paid at ${order.paidAt}`
-                                : 'not paid'}
+                                ? `Pago em ${new Date(
+                                    order.paidAt
+                                  ).toLocaleString()}`
+                                : 'Não pago'}
                             </TableCell>
                             <TableCell>
                               {order.isDelivered
-                                ? `delivered at ${order.deliveredAt}`
-                                : 'not delivered'}
+                                ? `Enviado em ${new Date(
+                                    order.deliveredAt
+                                  ).toLocaleString()}`
+                                : 'Não enviado'}
                             </TableCell>
                             <TableCell>
                               <NexLink href={`/order/${order._id}`} passHref>
-                                <Button variant="contained">Details</Button>
+                                <Button variant="contained">Detalhes</Button>
                               </NexLink>
                             </TableCell>
                           </TableRow>
@@ -146,5 +156,3 @@ function OrderHistory() {
     </Layout>
   );
 }
-
-export default dynamic(() => Promise.resolve(OrderHistory), { ssr: false });

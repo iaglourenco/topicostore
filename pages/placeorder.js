@@ -60,7 +60,7 @@ export default function PlaceOrder() {
       const { data } = await axios.post(
         '/api/orders',
         {
-          orderOItems: cartItems,
+          orderItems: cartItems,
           shippingAddress,
           paymentMethod,
           itemsPrice,
@@ -185,7 +185,12 @@ export default function PlaceOrder() {
                     <Typography>Itens:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">R$ {itemsPrice}</Typography>
+                    <Typography align="right">
+                      {new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      }).format(itemsPrice)}
+                    </Typography>
                   </Grid>
                 </Grid>
               </ListItem>

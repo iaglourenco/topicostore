@@ -73,12 +73,12 @@ function Profile() {
             <List>
               <NexLink href="/profile" passHref>
                 <ListItem selected button component="a">
-                  <ListItemText primary="User Profile"></ListItemText>
+                  <ListItemText primary="Perfil"></ListItemText>
                 </ListItem>
               </NexLink>
               <NexLink href="/order-history" passHref>
                 <ListItem button component="a">
-                  <ListItemText primary="Order History"></ListItemText>
+                  <ListItemText primary="Histórico de compras"></ListItemText>
                 </ListItem>
               </NexLink>
             </List>
@@ -89,7 +89,7 @@ function Profile() {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Profile
+                  Perfil
                 </Typography>
               </ListItem>
               <ListItem>
@@ -112,14 +112,14 @@ function Profile() {
                             variant="outlined"
                             fullWidth
                             id="name"
-                            label="Name"
+                            label="Nome completo"
                             inputProps={{ type: 'name' }}
                             error={Boolean(errors.name)}
                             helperText={
                               errors.name
                                 ? errors.name.type === 'minLength'
-                                  ? 'Name length is more than 1'
-                                  : 'Name is required'
+                                  ? 'Nome muito curto'
+                                  : 'Nome completo é obrigatório'
                                 : ''
                             }
                             {...field}
@@ -147,8 +147,8 @@ function Profile() {
                             helperText={
                               errors.email
                                 ? errors.email.type === 'pattern'
-                                  ? 'Email is not valid'
-                                  : 'Email is required'
+                                  ? 'Email inválido'
+                                  : 'Email é obrigatório'
                                 : ''
                             }
                             {...field}
@@ -164,20 +164,20 @@ function Profile() {
                         rules={{
                           validate: (value) =>
                             value === '' ||
-                            value.length > 5 ||
-                            'Password length is more than 5',
+                            value.length < 5 ||
+                            'O mínimo é de 5 caracteres',
                         }}
                         render={({ field }) => (
                           <TextField
                             variant="outlined"
                             fullWidth
                             id="password"
-                            label="Password"
+                            label="Senha"
                             inputProps={{ type: 'password' }}
                             error={Boolean(errors.password)}
                             helperText={
                               errors.password
-                                ? 'Password length is more than 5'
+                                ? 'O mínimo é de 5 caracteres'
                                 : ''
                             }
                             {...field}
@@ -193,20 +193,20 @@ function Profile() {
                         rules={{
                           validate: (value) =>
                             value === '' ||
-                            value.length > 5 ||
-                            'Confirm Password length is more than 5',
+                            value.length < 5 ||
+                            'O mínimo é de 5 caracteres',
                         }}
                         render={({ field }) => (
                           <TextField
                             variant="outlined"
                             fullWidth
                             id="confirmPassword"
-                            label="Confirm Password"
+                            label="Confirmar senha"
                             inputProps={{ type: 'password' }}
                             error={Boolean(errors.confirmPassword)}
                             helperText={
                               errors.password
-                                ? 'Confirm Password length is more than 5'
+                                ? 'O mínimo é de 5 caracteres'
                                 : ''
                             }
                             {...field}
@@ -221,7 +221,7 @@ function Profile() {
                         fullWidth
                         color="primary"
                       >
-                        Update
+                        Atualizar
                       </Button>
                     </ListItem>
                   </List>

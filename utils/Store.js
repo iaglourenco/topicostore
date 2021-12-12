@@ -60,10 +60,20 @@ function reducer(state, action) {
         ...state,
         cart: { ...state.cart, paymentMethod: action.payload },
       };
+    case 'CART_CLEAR':
+      return {
+        //estado anterior/previous state , seta o carrinho para vazio
+        ...state,
+        cart: { ...state.cart, cartItems: [] },
+      };
     case 'USER_LOGIN':
       return { ...state, userInfo: action.payload };
     case 'USER_LOGOUT':
-      return { ...state, userInfo: null, cart: { cartItems: [] } }; //limpa dados do cliente, login e carrinho
+      return {
+        ...state,
+        userInfo: null,
+        cart: { cartItems: [], shippingAddress: {}, paymentMethod: '' },
+      }; //limpa dados do cliente, login e carrinho
 
     default:
       //padrão = manter antigo, guardado nos Cookies

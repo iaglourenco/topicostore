@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React, { useContext } from 'react';
 import Layout from '../../components/Layout';
 import NextLink from 'next/link';
 import {
@@ -22,7 +22,7 @@ import { useRouter } from 'next/router';
 export default function ProductScreen(props) {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
-  const { product} = props;
+  const { product } = props;
   const classes = useStyles();
 
   if (!product) {
@@ -31,7 +31,7 @@ export default function ProductScreen(props) {
         <div>
           <NextLink href="/" passHref>
             <Link>
-              <Typography> Voltar aos Produtos</Typography>
+              <Typography>Voltar aos Produtos</Typography>
             </Link>
           </NextLink>
         </div>
@@ -44,18 +44,20 @@ export default function ProductScreen(props) {
     );
   }
 
-  const addToCartHandler = async () =>{
+  const addToCartHandler = async () => {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock < quantity) {
-        window.alert('Item fora de estoque');
-        return;
+      window.alert('Item fora de estoque');
+      return;
     }
-    dispatch({type:'CART_ADD_ITEM',payload: {...product,quantity: quantity }})
+    dispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity: quantity },
+    });
     router.push('/cart');
-
-  }
+  };
   return (
     <Layout title={product.name} description={product.description}>
       <div className={classes.section}>
@@ -129,8 +131,12 @@ export default function ProductScreen(props) {
                 </Grid>
               </ListItem>
               <ListItem>
-                <Button fullWidth variant="contained" color="primary"
-                onClick={addToCartHandler}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={addToCartHandler}
+                >
                   adicionar ao carrinho
                 </Button>
               </ListItem>
@@ -142,10 +148,10 @@ export default function ProductScreen(props) {
   );
 }
 export async function getServerSideProps(context) {
-  const {params} = context;
-  const {slug} = params;
+  const { params } = context;
+  const { slug } = params;
   await db.connect();
-  const product = await Product.findOne({slug}).lean();
+  const product = await Product.findOne({ slug }).lean();
   await db.disconnect();
   return {
     props: {

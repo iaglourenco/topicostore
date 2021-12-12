@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import dynamic from 'next/dynamic';
 import Layout from '../../components/Layout';
 import { Store } from '../../utils/Store';
 import NextLink from 'next/link';
@@ -15,7 +14,6 @@ import {
   TableCell,
   Link,
   CircularProgress,
-  Button,
   Card,
   List,
   ListItem,
@@ -26,6 +24,7 @@ import useStyles from '../../utils/styles';
 import { useSnackbar } from 'notistack';
 import { getError } from '../../utils/error';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+
 function reducer(state, action) {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -46,7 +45,7 @@ function reducer(state, action) {
       state;
   }
 }
-function Order({ params }) {
+export default function Order({ params }) {
   const orderId = params.id;
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
   const classes = useStyles();
@@ -103,7 +102,7 @@ function Order({ params }) {
           type: 'resetOptions',
           value: {
             'client-id': clientId,
-            currency: 'USD',
+            currency: 'BRL',
           },
         });
         paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
@@ -137,7 +136,7 @@ function Order({ params }) {
           }
         );
         dispatch({ type: 'PAY_SUCCESS', payload: data });
-        enqueueSnackbar('Order is paid', { variant: 'success' });
+        enqueueSnackbar('Pedido Pago', { variant: 'success' });
       } catch (err) {
         dispatch({ type: 'PAY_FAIL', payload: getError(err) });
         enqueueSnackbar(getError(err), { variant: 'error' });
@@ -151,7 +150,7 @@ function Order({ params }) {
   return (
     <Layout title={`Order ${orderId}`}>
       <Typography component="h1" variant="h1">
-        Order {orderId}
+        Pedido: {orderId}
       </Typography>
       {loading ? (
         <CircularProgress />
@@ -164,7 +163,7 @@ function Order({ params }) {
               <List>
                 <ListItem>
                   <Typography component="h2" variant="h2">
-                    Shipping Address
+                    Endereço de entrega
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -174,7 +173,7 @@ function Order({ params }) {
                 </ListItem>
                 <ListItem>
                   Status:{' '}
-                  {isDelivered ? `enviado em ${deliveredAt}` : 'não enviado'}
+                  {isDelivered ? `Enviado em ${deliveredAt}` : 'Não enviado'}
                 </ListItem>
               </List>
             </Card>
@@ -182,12 +181,15 @@ function Order({ params }) {
               <List>
                 <ListItem>
                   <Typography component="h2" variant="h2">
-                    Payment Method
+                    Metodo de pagamento
                   </Typography>
                 </ListItem>
                 <ListItem>{paymentMethod}</ListItem>
                 <ListItem>
-                  Status: {isPaid ? `pago em ${paidAt}` : 'não pago'}
+                  Status:{' '}
+                  {isPaid
+                    ? `Pago em ${new Date(paidAt).toLocaleString()}`
+                    : 'Não pago'}
                 </ListItem>
               </List>
             </Card>
@@ -195,7 +197,7 @@ function Order({ params }) {
               <List>
                 <ListItem>
                   <Typography component="h2" variant="h2">
-                    Order Items
+                    Itens
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -203,10 +205,10 @@ function Order({ params }) {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Image</TableCell>
-                          <TableCell>Name</TableCell>
-                          <TableCell align="right">Quantity</TableCell>
-                          <TableCell align="right">Price</TableCell>
+                          <TableCell>Imagem</TableCell>
+                          <TableCell>Nome</TableCell>
+                          <TableCell align="right">Quantidade</TableCell>
+                          <TableCell align="right">Preço</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -235,7 +237,7 @@ function Order({ params }) {
                               <Typography>{item.quantity}</Typography>
                             </TableCell>
                             <TableCell align="right">
-                              <Typography>$ {item.price}</Typography>
+                              <Typography> R$ {item.price}</Typography>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -250,35 +252,35 @@ function Order({ params }) {
             <Card className={classes.section}>
               <List>
                 <ListItem>
-                  <Typography variant="h2">Order Summary</Typography>
+                  <Typography variant="h2">Resumo da compra</Typography>
                 </ListItem>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Items:</Typography>
+                      <Typography>Itens:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${itemsPrice}</Typography>
+                      <Typography align="right">R$ {itemsPrice}</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Tax:</Typography>
+                      <Typography>Taxas:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${taxPrice}</Typography>
+                      <Typography align="right">R$ {taxPrice}</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Shipping:</Typography>
+                      <Typography>Frete:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${shippingPrice}</Typography>
+                      <Typography align="right">R$ {shippingPrice}</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
@@ -291,7 +293,7 @@ function Order({ params }) {
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="right">
-                        <strong>${totalPrice}</strong>
+                        <strong>R$ {totalPrice}</strong>
                       </Typography>
                     </Grid>
                   </Grid>
@@ -322,4 +324,3 @@ function Order({ params }) {
 export async function getServerSideProps({ params }) {
   return { props: { params } };
 }
-export default dynamic(() => Promise.resolve(Order), { ssr: false });
