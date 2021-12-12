@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import NexLink from 'next/link';
+import NextLink from 'next/link';
 import React, { useEffect, useContext, useReducer } from 'react';
 import {
   CircularProgress,
@@ -71,16 +71,16 @@ export default function OrderHistory() {
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
             <List>
-              <NexLink href="/profile" passHref>
+              <NextLink href="/profile" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Perfil"></ListItemText>
                 </ListItem>
-              </NexLink>
-              <NexLink href="/order-history" passHref>
+              </NextLink>
+              <NextLink href="/order-history" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Histórico de compras"></ListItemText>
                 </ListItem>
-              </NexLink>
+              </NextLink>
             </List>
           </Card>
         </Grid>
@@ -138,9 +138,9 @@ export default function OrderHistory() {
                                 : 'Não enviado'}
                             </TableCell>
                             <TableCell>
-                              <NexLink href={`/order/${order._id}`} passHref>
+                              <NextLink href={`/order/${order._id}`} passHref>
                                 <Button variant="contained">Detalhes</Button>
-                              </NexLink>
+                              </NextLink>
                             </TableCell>
                           </TableRow>
                         ))}

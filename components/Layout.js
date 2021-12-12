@@ -147,6 +147,15 @@ export default function Layout({ title, description, children }) {
                     >
                       Historico de pedido
                     </MenuItem>
+                    {userInfo.isAdmin && (
+                      <MenuItem
+                        onClick={(e) =>
+                          loginMenuCloseHandler(e, '/admin/products')
+                        }
+                      >
+                        Painel admin
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
                 </>
