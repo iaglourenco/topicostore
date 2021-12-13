@@ -1,5 +1,5 @@
 //import { Grid, Card, CardActionArea, CardMedia, CardContent, Typography} from '@material-ui/core';
-import Layout from '../components/Layout';
+import Layout from "../components/Layout";
 import {
   Grid,
   Card,
@@ -9,14 +9,14 @@ import {
   Typography,
   CardActions,
   Button,
-} from '@material-ui/core';
-import NextLink from 'next/link';
-import db from '../utils/dbConnection';
-import Product from '../models/Product';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useContext } from 'react';
-import { Store } from '../utils/Store';
+} from "@material-ui/core";
+import NextLink from "next/link";
+import db from "../utils/dbConnection";
+import Product from "../models/Product";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { Store } from "../utils/Store";
 export default function Home(props) {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
@@ -26,20 +26,22 @@ export default function Home(props) {
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock < quantity) {
-      window.alert('Item fora de estoque');
+      window.alert("Item fora de estoque");
       return;
     }
     dispatch({
-      type: 'CART_ADD_ITEM',
+      type: "CART_ADD_ITEM",
       payload: { ...product, quantity: quantity },
     });
-    router.push('/cart');
+    router.push("/cart");
   };
 
   return (
     <Layout>
       <div>
-        <h1>Produtos</h1>
+        <Typography variant="h4" component="h1">
+          Produtos
+        </Typography>
         <Grid container spacing={3}>
           {products.map((product) => (
             //md= numero de produtos
@@ -50,6 +52,7 @@ export default function Home(props) {
                   <CardActionArea>
                     <CardMedia
                       component="img"
+                      height="200"
                       image={product.image}
                       title={product.name}
                     ></CardMedia>
@@ -62,10 +65,10 @@ export default function Home(props) {
                 <CardActions>
                   {/*formatação de preços*/}
                   <Typography>
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    }).format(product.price)}{' '}
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(product.price)}{" "}
                   </Typography>
                   <Button
                     size="small"
