@@ -14,16 +14,17 @@ import {
   Card,
   ListItem,
   List,
-} from "@material-ui/core";
-import React, { useContext } from "react";
-import Layout from "../components/Layout";
-import { Store } from "../utils/Store";
-import NextLink from "next/link";
-import Image from "next/image";
-import axios from "axios";
-import { useRouter } from "next/router";
+} from '@material-ui/core';
+import dynamic from 'next/dynamic';
+import React, { useContext } from 'react';
+import Layout from '../components/Layout';
+import { Store } from '../utils/Store';
+import NextLink from 'next/link';
+import Image from 'next/image';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
-export default function useCartScreen() {
+function useCartScreen() {
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -31,21 +32,21 @@ export default function useCartScreen() {
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
-      window.alert("Item fora de estoque");
+      window.alert('Item fora de estoque');
       return;
     }
     dispatch({
-      type: "CART_ADD_ITEM",
+      type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
   };
   const removeItemHandler = (item) => {
-    dispatch({ type: "CART_REMOVE_ITEM", payload: item });
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
   const useCheckoutHandler = () => {
     const router = useRouter();
 
-    router.push("/shipping");
+    router.push('/shipping');
   };
   return (
     <Layout title="Carrinho de Compras">
@@ -131,7 +132,7 @@ export default function useCartScreen() {
               <List>
                 <ListItem>
                   <Typography variant="h2">
-                    Total ({cartItems.reduce((a, c) => a + c.quantity, 0)}{" "}
+                    Total ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                     itens) : R$
                     {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                   </Typography>
@@ -154,3 +155,4 @@ export default function useCartScreen() {
     </Layout>
   );
 }
+export default dynamic(() => Promise.resolve(useCartScreen), { ssr: false });
