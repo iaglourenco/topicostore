@@ -67,11 +67,13 @@ export default function Payment() {
                   control={<Radio />}
                 ></FormControlLabel>
                 <FormControlLabel
-                  label="Cartão/Stripe"
-                  value="Cartão/Stripe"
+                  disabled
+                  label="Cartão"
+                  value="Cartão"
                   control={<Radio />}
                 ></FormControlLabel>
                 <FormControlLabel
+                  disabled
                   label="Dinheiro"
                   value="Dinheiro"
                   control={<Radio />}
