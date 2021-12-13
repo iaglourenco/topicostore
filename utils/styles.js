@@ -6,7 +6,7 @@ const useStyles = makeStyles({
     backgroundColor: '#203040',
     //muda o style do child, no caso o texto com o nome da loja
     '& a': {
-      color: '#FFFFFF',
+      color: '#ffffff',
       marginLeft: 10,
     },
   },
@@ -29,6 +29,24 @@ const useStyles = makeStyles({
   section: {
     marginTop: 10,
     marginBottom: 10,
+  },
+  form: {
+    maxWidth: 800,
+    margin: '0 auto',
+    width: '100%',
+  },
+  navbarButton: {
+    color: '#ffffff',
+    textTransform: 'initial',
+  },
+  transparentBackground: {
+    backgroundColor: 'transparent',
+  },
+  error: {
+    color: '#f04040',
+  },
+  fullWidth: {
+    width: '100%',
   },
 });
 export default useStyles;

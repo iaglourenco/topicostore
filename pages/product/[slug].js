@@ -1,6 +1,4 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import data from '../../utils/data';
+import React, { useContext } from 'react';
 import Layout from '../../components/Layout';
 import NextLink from 'next/link';
 import {
@@ -15,12 +13,17 @@ import {
 //import { mergeClasses } from '@material-ui/styles';
 import useStyles from '../../utils/styles';
 import Image from 'next/image';
+import Product from '../../models/Product';
+import db from '../../utils/dbConnection';
+import axios from 'axios';
+import { Store } from '../../utils/Store';
+import { useRouter } from 'next/router';
 
-export default function ProductScreen() {
-  const classes = useStyles();
+export default function ProductScreen(props) {
   const router = useRouter();
-  const { id } = router.query;
-  const product = data.products.find((a) => a.id === id);
+  const { state, dispatch } = useContext(Store);
+  const { product } = props;
+  const classes = useStyles();
 
   if (!product) {
     return (
@@ -28,7 +31,7 @@ export default function ProductScreen() {
         <div>
           <NextLink href="/" passHref>
             <Link>
-              <Typography> Voltar aos Produtos</Typography>
+              <Typography>Voltar aos Produtos</Typography>
             </Link>
           </NextLink>
         </div>
@@ -40,6 +43,21 @@ export default function ProductScreen() {
       </Layout>
     );
   }
+
+  const addToCartHandler = async () => {
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock < quantity) {
+      window.alert('Item fora de estoque');
+      return;
+    }
+    dispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity: quantity },
+    });
+    router.push('/cart');
+  };
   return (
     <Layout title={product.name} description={product.description}>
       <div className={classes.section}>
@@ -60,7 +78,6 @@ export default function ProductScreen() {
             Layout="responsive"
           />
         </Grid>
-
         <Grid item md={3} xs={12}>
           <List>
             <ListItem>
@@ -88,7 +105,6 @@ export default function ProductScreen() {
             </ListItem>
           </List>
         </Grid>
-
         <Grid item md={3} xs={12}>
           <Card>
             <List>
@@ -98,7 +114,7 @@ export default function ProductScreen() {
                     <Typography>Preço</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography>R${product.price}</Typography>
+                    <Typography>R$ {product.price}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -115,7 +131,12 @@ export default function ProductScreen() {
                 </Grid>
               </ListItem>
               <ListItem>
-                <Button fullWidth variant="contained" color="primary">
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={addToCartHandler}
+                >
                   adicionar ao carrinho
                 </Button>
               </ListItem>
@@ -125,4 +146,16 @@ export default function ProductScreen() {
       </Grid>
     </Layout>
   );
+}
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const { slug } = params;
+  await db.connect();
+  const product = await Product.findOne({ slug }).lean();
+  await db.disconnect();
+  return {
+    props: {
+      product: db.convertDocToObj(product),
+    },
+  };
 }

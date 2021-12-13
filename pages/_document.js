@@ -29,7 +29,7 @@ Mydocuments.getInitialProps = async (ctx) => {
   ctx.renderPage = () => {
     return OriginalRenderPage({
       //App como parametro -> props como parametro
-      enhanceApp: (App) => (props) => sheets.collect(<app {...props} />),
+      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
   };
   const initialProps = await Document.getInitialProps(ctx);

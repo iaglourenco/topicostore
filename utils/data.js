@@ -1,32 +1,47 @@
+import bcrypt from 'bcryptjs'
 const data = {
+  users: [
+    {
+      name: 'John',
+      email: 'admin@example.com',
+      password: bcrypt.hashSync('123456'),
+      isAdmin: true,
+    },
+    {
+      name: 'pedro',
+      email: 'user@example.com',
+      password: bcrypt.hashSync('123456'),
+      isAdmin: false,
+    },
+  ],
   products: [
     {
       name: 'Camisetas',
       category: 'a',
-      id: 'camisetas',
+      slug: 'camisetas',
       image: '/images/blusa_branca_masculina.jpg',
       price: 10,
       brand: 'ai',
       rating: 5,
       numReviews: 10,
-      countInStock: 2,
+      countInStock: 10,
       description: 'Um item legalzao',
     },
     {
       name: 'b',
-      id: 'camisetas-legais',
+      slug: 'camisetas-legais',
       category: 'b',
       image: '/images/',
       price: 10,
       brand: 'ai',
       rating: 5,
       numReviews: 10,
-      countInStock: 2,
+      countInStock: 5,
       description: 'Um item legalzao',
     },
     {
       name: 'c',
-      id: 'camisetas-legais',
+      slug: 'camisetas-legais1',
       category: 'b',
       image: '/images/',
       price: 10,
@@ -38,7 +53,7 @@ const data = {
     },
     {
       name: 'd',
-      id: 'camisetas-legais',
+      slug: 'camisetas-legais2',
       category: 'a',
       image: '/images/',
       price: 10,

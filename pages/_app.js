@@ -1,7 +1,8 @@
+import { SnackbarProvider } from 'notistack';
 import { useEffect } from 'react';
 import '../styles/globals.css';
-//import { Provider } from 'next-auth/client';
 import { StoreProvider } from '../utils/Store';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 function MyApp({ Component, pageProps }) {
   // arrumando problema de rendenizaçao do css do server side no refresh da pagina
@@ -11,12 +12,15 @@ function MyApp({ Component, pageProps }) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+
   return (
-    <StoreProvider>
-      <Component {...pageProps} />
-    </StoreProvider>
-    //session={pageProps.session}>
+    <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+      <StoreProvider>
+        <PayPalScriptProvider deferLoading={true}>
+          <Component {...pageProps} />
+        </PayPalScriptProvider>
+      </StoreProvider>
+    </SnackbarProvider>
   );
 }
-
 export default MyApp;
