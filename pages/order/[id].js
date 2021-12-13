@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
-import Layout from '../../components/Layout';
-import { Store } from '../../utils/Store';
-import NextLink from 'next/link';
-import Image from 'next/image';
+import React, { useContext, useEffect, useReducer } from "react";
+import Layout from "../../components/Layout";
+import { Store } from "../../utils/Store";
+import NextLink from "next/link";
+import Image from "next/image";
 import {
   Grid,
   TableContainer,
@@ -17,30 +17,30 @@ import {
   Card,
   List,
   ListItem,
-} from '@material-ui/core';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import useStyles from '../../utils/styles';
-import { useSnackbar } from 'notistack';
-import { getError } from '../../utils/error';
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+} from "@material-ui/core";
+import axios from "axios";
+import { useRouter } from "next/router";
+import useStyles from "../../utils/styles";
+import { useSnackbar } from "notistack";
+import { getError } from "../../utils/error";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true, error: '' };
-    case 'FETCH_SUCCESS':
-      return { ...state, loading: false, order: action.payload, error: '' };
-    case 'FETCH_FAIL':
+    case "FETCH_REQUEST":
+      return { ...state, loading: true, error: "" };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, order: action.payload, error: "" };
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case 'PAY_REQUEST':
+    case "PAY_REQUEST":
       return { ...state, loadingPay: true };
-    case 'PAY_SUCCESS':
+    case "PAY_SUCCESS":
       return { ...state, loadingPay: false, successPay: true };
-    case 'PAY_FAIL':
+    case "PAY_FAIL":
       return { ...state, loadingPay: false, errorPay: action.payload };
-    case 'PAY_RESET':
-      return { ...state, loadingPay: false, successPay: false, errorPay: '' };
+    case "PAY_RESET":
+      return { ...state, loadingPay: false, successPay: false, errorPay: "" };
     default:
       state;
   }
@@ -57,7 +57,7 @@ export default function Order({ params }) {
     {
       loading: true,
       order: {},
-      error: '',
+      error: "",
     }
   );
   const {
@@ -75,42 +75,43 @@ export default function Order({ params }) {
   } = order;
   useEffect(() => {
     if (!userInfo) {
-      return router.push('/login');
+      return router.push("/login");
     }
     const fetchOrder = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
     if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder();
       if (successPay) {
-        dispatch({ type: 'PAY_RESET' });
+        dispatch({ type: "PAY_RESET" });
       }
     } else {
       const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get('/api/keys/paypal', {
+        const { data: clientId } = await axios.get("/api/keys/paypal", {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         paypalDispatch({
-          type: 'resetOptions',
+          type: "resetOptions",
           value: {
-            'client-id': clientId,
-            currency: 'BRL',
+            "client-id": clientId,
+            currency: "BRL",
           },
         });
-        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
       };
       loadPaypalScript();
     }
   }, [order, successPay]);
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+  closeSnackbar();
   function createOrder(data, actions) {
     return actions.order
       .create({
@@ -127,7 +128,7 @@ export default function Order({ params }) {
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
       try {
-        dispatch({ type: 'PAY_REQUEST' });
+        dispatch({ type: "PAY_REQUEST" });
         const { data } = await axios.put(
           `/api/orders/${order._id}/pay`,
           details,
@@ -135,16 +136,16 @@ export default function Order({ params }) {
             headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
-        dispatch({ type: 'PAY_SUCCESS', payload: data });
-        enqueueSnackbar('Pedido Pago', { variant: 'success' });
+        dispatch({ type: "PAY_SUCCESS", payload: data });
+        enqueueSnackbar("Pedido Pago", { variant: "success" });
       } catch (err) {
-        dispatch({ type: 'PAY_FAIL', payload: getError(err) });
-        enqueueSnackbar(getError(err), { variant: 'error' });
+        dispatch({ type: "PAY_FAIL", payload: getError(err) });
+        enqueueSnackbar(getError(err), { variant: "error" });
       }
     });
   }
   function onError(err) {
-    enqueueSnackbar(getError(err), { variant: 'error' });
+    enqueueSnackbar(getError(err), { variant: "error" });
   }
 
   return (
@@ -167,13 +168,13 @@ export default function Order({ params }) {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  {shippingAddress.fullName}, {shippingAddress.address},{' '}
-                  {shippingAddress.city}, {shippingAddress.postalCode},{' '}
+                  {shippingAddress.fullName}, {shippingAddress.address},{" "}
+                  {shippingAddress.city}, {shippingAddress.postalCode},{" "}
                   {shippingAddress.state}
                 </ListItem>
                 <ListItem>
-                  Status:{' '}
-                  {isDelivered ? `Enviado em ${deliveredAt}` : 'Não enviado'}
+                  Status:{" "}
+                  {isDelivered ? `Enviado em ${deliveredAt}` : "Não enviado"}
                 </ListItem>
               </List>
             </Card>
@@ -186,10 +187,10 @@ export default function Order({ params }) {
                 </ListItem>
                 <ListItem>{paymentMethod}</ListItem>
                 <ListItem>
-                  Status:{' '}
+                  Status:{" "}
                   {isPaid
                     ? `Pago em ${new Date(paidAt).toLocaleString()}`
-                    : 'Não pago'}
+                    : "Não pago"}
                 </ListItem>
               </List>
             </Card>
