@@ -24,6 +24,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 export default function useCartScreen() {
+  const router = useRouter();
+
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -43,8 +45,6 @@ export default function useCartScreen() {
     dispatch({ type: "CART_REMOVE_ITEM", payload: item });
   };
   const useCheckoutHandler = () => {
-    const router = useRouter();
-
     router.push("/shipping");
   };
   return (
