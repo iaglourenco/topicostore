@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 export const Store = createContext();
 const initialState = {
   //salvando preferencia do usuário do darkMode
-  darkMode: Cookies.get('darkMode') === 'ON' ? true : false,
   cart: {
     cartItems: Cookies.get('cartItems')
       ? JSON.parse(Cookies.get('cartItems'))
@@ -25,10 +24,6 @@ const initialState = {
 //atualização do darkMode pelo state
 function reducer(state, action) {
   switch (action.type) {
-    case 'DARK_MODE_ON':
-      return { ...state, darkMode: true };
-    case 'DARK_MODE_OFF':
-      return { ...state, darkMode: false };
     case 'CART_ADD_ITEM': {
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(

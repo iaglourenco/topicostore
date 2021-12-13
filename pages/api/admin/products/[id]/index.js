@@ -27,10 +27,10 @@ handler.put(async (req, res) => {
     product.description = req.body.description;
     await product.save();
     await db.disconnect();
-    res.send({ message: 'Product Updated Successfully' });
+    res.send({ message: 'Produto atualizado' });
   } else {
     await db.disconnect();
-    res.status(404).send({ message: 'Product Not Found' });
+    res.status(404).send({ message: 'Produto não encontrado' });
   }
 });
 
@@ -40,10 +40,10 @@ handler.delete(async (req, res) => {
   if (product) {
     await product.remove();
     await db.disconnect();
-    res.send({ message: 'Product Deleted' });
+    res.send({ message: 'Produto deletado' });
   } else {
     await db.disconnect();
-    res.status(404).send({ message: 'Product Not Found' });
+    res.status(404).send({ message: 'Produto não encontrado' });
   }
 });
 

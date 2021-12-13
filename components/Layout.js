@@ -10,7 +10,6 @@ import {
   Link,
   ThemeProvider,
   CssBaseline,
-  Switch,
   Badge,
   Button,
   Menu,
@@ -25,7 +24,7 @@ import { useRouter } from 'next/router';
 export default function Layout({ title, description, children }) {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
-  const { darkMode, cart, userInfo } = state; //usado na createMuiTreme
+  const { cart, userInfo } = state; //usado na createMuiTreme
   const theme = createTheme({
     typography: {
       h1: {
@@ -39,8 +38,7 @@ export default function Layout({ title, description, children }) {
         margin: '1rem 0',
       },
       palette: {
-        //mode: darkMode ? 'dark' : 'light', também funciona
-        mode: darkMode ? 'dark' : 'light',
+        mode: 'light',
         primary: {
           main: '#f0c000',
         },
@@ -51,11 +49,6 @@ export default function Layout({ title, description, children }) {
     },
   });
   const classes = useStyles();
-  const darkModeChangeHandler = () => {
-    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
-    const newDarkMode = !darkMode;
-    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
-  };
   const [anchorEl, setAnchorEl] = useState(null);
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget);
@@ -99,10 +92,6 @@ export default function Layout({ title, description, children }) {
           para isso a classe grow*/}
             <div className={classes.grow}></div>
             <div>
-              <Switch //botão do darkMode
-                checked={darkMode}
-                onChange={darkModeChangeHandler}
-              ></Switch>
               {/*Hook para carrinho e login*/}
               <NextLink href="/cart" passHref>
                 <Link>
