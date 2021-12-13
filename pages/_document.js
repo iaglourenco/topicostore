@@ -1,6 +1,6 @@
-import { ServerStyleSheets } from '@material-ui/core/styles';
-import Document, { Head, Html, Main, NextScript } from 'next/document';
-import React from 'react';
+import { ServerStyleSheets } from "@material-ui/core/styles";
+import Document, { Head, Html, Main, NextScript } from "next/document";
+import React from "react";
 
 // Código pronto para arrumar a rendenização do Materials UI , essa é a unica finalidade desse arquivo _documents.js
 export default class Mydocuments extends Document {
@@ -11,7 +11,7 @@ export default class Mydocuments extends Document {
           <link
             rel="stylesheet"
             //Fonte Padrão
-            href="https://fonts.googleapis.com/css?family=Robot:300,400,500,700&display=swap"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
         </Head>
         <body>
